@@ -14,11 +14,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Link, useLocation } from 'react-router-dom';
+import { Container } from '@mui/material';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+// const navItems = ['Contacts', 'About'];
+const userMenu = [
+  { menuItem: 'Register', destination: 'register' },
+  { menuItem: 'Log in', destination: 'login' },
+];
+// const drawerMenu = [...navItems, ...userMenu];
 
 export function HomePage(props) {
+  const location = useLocation();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -29,14 +37,19 @@ export function HomePage(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        Phonebook
       </Typography>
       <Divider />
       <List>
-        {navItems.map(item => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+        {userMenu.map(({ menuItem, destination }) => (
+          <ListItem key={menuItem} disablePadding>
+            <ListItemButton
+              sx={{ textAlign: 'left' }}
+              component={Link}
+              to={destination}
+              state={{ from: location }}
+            >
+              <ListItemText primary={menuItem} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -48,34 +61,42 @@ export function HomePage(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', mw: 'lg' }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map(item => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
+        <Container maxWidth="xl">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { sm: 'block' } }}
+            >
+              Phonebook
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {userMenu.map(({ menuItem, destination }) => (
+                <Button
+                  key={menuItem}
+                  component={Link}
+                  to={destination}
+                  state={{ from: location }}
+                  sx={{ color: '#fff' }}
+                >
+                  {menuItem}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
       <Box component="nav">
         <Drawer
@@ -97,8 +118,7 @@ export function HomePage(props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
+      <Box component="main" sx={{ p: 3, mt: 8 }}>
         <Typography>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
           unde fugit veniam eius, perspiciatis sunt? Corporis qui ducimus
