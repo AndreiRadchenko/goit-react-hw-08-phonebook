@@ -1,9 +1,9 @@
 import { LoginForm } from 'components/LoginForm/LoginForm';
-import { RegisterAppBar } from 'pages/Register/RegisterAppBar';
+import { BackAppBar } from 'components/BackAppBar/BackAppBar';
 export const Login = () => {
   return (
     <>
-      <RegisterAppBar />
+      <BackAppBar />
       <LoginForm sx={{ mt: 4 }} />
     </>
   );

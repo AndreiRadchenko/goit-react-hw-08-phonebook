@@ -45,7 +45,7 @@ export function RegisterForm() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 16,
+            marginTop: 12,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

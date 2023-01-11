@@ -8,7 +8,7 @@ import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import Container from '@mui/material/Container';
 import { Link, useLocation } from 'react-router-dom';
 
-export const RegisterAppBar = () => {
+export const BackAppBar = () => {
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/';
 

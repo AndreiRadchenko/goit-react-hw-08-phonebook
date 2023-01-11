@@ -18,7 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const theme = createTheme();
 
-export function LoginForm() {
+export function AddContactForm() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
@@ -49,7 +49,7 @@ export function LoginForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Log in
+            New Contact
           </Typography>
           <Box
             component="form"
@@ -98,15 +98,8 @@ export function LoginForm() {
               variant="contained"
               sx={{ mt: 8, mb: 2 }}
             >
-              Log in
+              Save
             </Button>
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
       </Container>
