@@ -35,6 +35,11 @@ const handleAnySuccess = state => {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    resetAuthError(state, action) {
+      state.error = null;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(register.fulfilled, handleSuccsess)
@@ -51,4 +56,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { resetAuthError } = authSlice.actions;
 export default authSlice.reducer;

@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
+// import { useAuth } from 'hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { logOut } from 'redux/auth';
 
 const drawerWidth = 240;
 // const navItems = ['Contacts', 'About'];
@@ -29,11 +32,17 @@ const userMenu = [
 
 export function MainAppBar(props) {
   const location = useLocation();
+  const dispatch = useDispatch();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  // const { user, token, isLoggedIn, isLoading, error } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(prevState => !prevState);
+  };
+
+  const handleLogOut = () => {
+    dispatch(logOut());
   };
 
   const drawer = (
@@ -55,6 +64,11 @@ export function MainAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem key={'logout'} disablePadding>
+          <ListItemButton sx={{ textAlign: 'left' }} onClick={handleLogOut}>
+            <ListItemText primary="Log out" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -96,6 +110,13 @@ export function MainAppBar(props) {
                   {menuItem}
                 </Button>
               ))}
+              <Button
+                key={'logout'}
+                sx={{ color: '#fff' }}
+                onClick={handleLogOut}
+              >
+                Log out
+              </Button>
             </Box>
           </Toolbar>
         </Container>

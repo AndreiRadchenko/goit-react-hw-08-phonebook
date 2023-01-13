@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,10 +14,20 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { logIn } from 'redux/auth';
+import { useShowToast } from 'hooks/useShowToast';
+import { Toast } from 'components/Toast/Toast';
+import { useAuth } from 'hooks/useAuth';
+import { useDispatch } from 'react-redux';
 
 const theme = createTheme();
 
 export function LoginForm() {
+  const dispatch = useDispatch();
+  const { isLoading } = useAuth();
+  const { isToastVisible, hideToast, toastSeverity, toastText } =
+    useShowToast('login');
+
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
@@ -30,16 +39,26 @@ export function LoginForm() {
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const credentials = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    dispatch(logIn(credentials));
+    event.currentTarget.reset();
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <CssBaseline />
+
+        <Toast
+          open={isToastVisible}
+          onClose={hideToast}
+          toastText={toastText}
+          severity={toastSeverity}
+        />
+
         <Box
           sx={{
             marginTop: 12,
@@ -53,6 +72,8 @@ export function LoginForm() {
           </Typography>
           <Box
             component="form"
+            name="login"
+            // ref={formRef}
             noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
@@ -75,7 +96,8 @@ export function LoginForm() {
                     Password
                   </InputLabel>
                   <Input
-                    id="standard-adornment-password"
+                    id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     endAdornment={
                       <InputAdornment position="end">
@@ -92,14 +114,15 @@ export function LoginForm() {
                 </FormControl>
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 8, mb: 2 }}
+              loading={isLoading}
             >
               Log in
-            </Button>
+            </LoadingButton>
             {/* <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">

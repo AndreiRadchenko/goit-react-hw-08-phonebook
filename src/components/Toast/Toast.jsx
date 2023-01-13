@@ -12,10 +12,10 @@ export const Toast = ({ open, toastText, severity, onClose }) => {
       <Alert
         onClose={onClose}
         severity={severity}
-        variant="filled"
+        // variant="filled"
         sx={{ width: '100%' }}
       >
-        Sorry, can't register user with this credentials!
+        {toastText}
       </Alert>
     </Snackbar>
   );
