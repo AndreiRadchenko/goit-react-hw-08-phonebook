@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { useNavigate } from 'react-router-dom';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
 
@@ -24,8 +23,6 @@ export const register = createAsyncThunk(
     try {
       const { data } = await axios.post('/users/signup', credentials);
       token.set(data.token);
-      // const navigate = useNavigate();
-      // navigate('/contacts', { replace: true });
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -44,8 +41,6 @@ export const logIn = createAsyncThunk(
     try {
       const { data } = await axios.post('/users/login', credentials);
       token.set(data.token);
-      // const navigate = useNavigate();
-      // navigate('/contacts', { replace: true });
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -62,6 +57,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     await axios.post('/users/logout');
     token.unset();
+    return 'User has logged out';
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
   }
@@ -89,8 +85,6 @@ export const fetchCurrentUser = createAsyncThunk(
     token.set(persistedToken);
     try {
       const { data } = await axios.get('/users/current');
-      const navigate = useNavigate();
-      navigate('/contacts', { replace: true });
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

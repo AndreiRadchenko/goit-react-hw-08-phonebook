@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,33 +16,39 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
-// import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { logOut } from 'redux/auth';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
-// const navItems = ['Contacts', 'About'];
+
 const userMenu = [
   { menuItem: 'Contacts', destination: 'contacts' },
   { menuItem: 'About', destination: '/' },
   { menuItem: 'Register', destination: 'register' },
   { menuItem: 'Log in', destination: 'login' },
 ];
-// const drawerMenu = [...navItems, ...userMenu];
 
 export function MainAppBar(props) {
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
   const dispatch = useDispatch();
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  // const { user, token, isLoggedIn, isLoading, error } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(prevState => !prevState);
   };
 
   const handleLogOut = () => {
-    dispatch(logOut());
+    dispatch(logOut())
+      .unwrap()
+      .then(() => {
+        navigate('/');
+      })
+      .catch(e => console.log(e));
   };
 
   const drawer = (

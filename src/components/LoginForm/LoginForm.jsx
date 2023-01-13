@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -19,16 +19,20 @@ import { useShowToast } from 'hooks/useShowToast';
 import { Toast } from 'components/Toast/Toast';
 import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export function LoginForm() {
   const dispatch = useDispatch();
-  const { isLoading } = useAuth();
+  const { isLoading, isLoggedIn } = useAuth();
   const { isToastVisible, hideToast, toastSeverity, toastText } =
     useShowToast('login');
+  const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  useEffect(() => isLoggedIn && navigate('/contacts'), [isLoggedIn, navigate]);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 

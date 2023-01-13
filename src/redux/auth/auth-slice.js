@@ -25,6 +25,7 @@ const handleError = (state, action) => {
 const handleSuccsess = (state, { payload: { user, token } }) => {
   state.user = user;
   state.token = token;
+  state.isLoggedIn = true;
 };
 
 const handleAnySuccess = state => {
@@ -47,6 +48,7 @@ const authSlice = createSlice({
       .addCase(logOut.fulfilled, state => {
         state.user.name = null;
         state.user.email = null;
+        state.isLoggedIn = false;
       })
       .addCase(fetchCurrentUser.fulfilled.toString(), handleSuccsess)
 

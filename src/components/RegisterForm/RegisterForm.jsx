@@ -1,5 +1,4 @@
-import { useState } from 'react';
-// import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -21,15 +20,19 @@ import { register } from 'redux/auth';
 import { useShowToast } from 'hooks/useShowToast';
 import { Toast } from 'components/Toast/Toast';
 import { useAuth } from 'hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export const RegisterForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isLoading } = useAuth();
+  const { isLoading, isLoggedIn } = useAuth();
   const { isToastVisible, hideToast, toastSeverity, toastText } =
     useShowToast('register');
+  const navigate = useNavigate();
+
+  useEffect(() => isLoggedIn && navigate('/contacts'), [isLoggedIn, navigate]);
 
   const [showPassword, setShowPassword] = useState(false);
 
