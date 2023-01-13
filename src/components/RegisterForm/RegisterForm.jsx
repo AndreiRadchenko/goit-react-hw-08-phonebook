@@ -1,5 +1,6 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import { useState } from 'react';
+// import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import { Link, useLocation } from 'react-router-dom';
@@ -15,14 +16,22 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useDispatch } from 'react-redux';
+import { register } from 'redux/auth';
+import { useShowToast } from 'hooks/useShowToast';
+import { Toast } from 'components/Toast/Toast';
+import { useAuth } from 'hooks/useAuth';
 
 const theme = createTheme();
 
-export function RegisterForm() {
+export const RegisterForm = () => {
   const location = useLocation();
-  // console.log(location);
+  const dispatch = useDispatch();
+  const { isLoading } = useAuth();
+  const { isToastVisible, hideToast, toastSeverity, toastText } =
+    useShowToast('register');
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -33,16 +42,27 @@ export function RegisterForm() {
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const credentials = {
+      name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    dispatch(register(credentials));
+    event.currentTarget.reset();
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <CssBaseline />
+
+        <Toast
+          open={isToastVisible}
+          onClose={hideToast}
+          toastText={toastText}
+          severity={toastSeverity}
+        />
+
         <Box
           sx={{
             marginTop: 12,
@@ -56,7 +76,7 @@ export function RegisterForm() {
           </Typography>
           <Box
             component="form"
-            noValidate
+            // noValidate
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
@@ -71,6 +91,8 @@ export function RegisterForm() {
                   label="Name"
                   autoFocus
                   variant="standard"
+                  // error={error !== null}
+                  // helperText={error}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -82,6 +104,8 @@ export function RegisterForm() {
                   name="email"
                   autoComplete="email"
                   variant="standard"
+                  // error={error !== null}
+                  // helperText={error}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -90,7 +114,8 @@ export function RegisterForm() {
                     Password
                   </InputLabel>
                   <Input
-                    id="standard-adornment-password"
+                    id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     endAdornment={
                       <InputAdornment position="end">
@@ -107,14 +132,15 @@ export function RegisterForm() {
                 </FormControl>
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 8, mb: 2 }}
+              loading={isLoading}
             >
-              Register
-            </Button>
+              <span>Register</span>
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to={'/login'} state={{ from: location }} variant="body2">
@@ -127,4 +153,4 @@ export function RegisterForm() {
       </Container>
     </ThemeProvider>
   );
-}
+};
