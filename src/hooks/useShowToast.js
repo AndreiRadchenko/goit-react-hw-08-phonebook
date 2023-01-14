@@ -10,7 +10,7 @@ export const useShowToast = currentPage => {
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [toastText, setToastText] = useState('');
   const [toastSeverity, setToastSeverity] = useState('error');
-  const prevUserName = usePrevious(user.name);
+  const prevUserName = usePrevious(user?.name);
 
   const hideToast = () => setIsToastVisible(false);
 
@@ -18,7 +18,7 @@ export const useShowToast = currentPage => {
     const messages = {
       register: {
         error: "Sorry, can't register user with this credentials!",
-        success: `User ${user.name} has been registered`,
+        success: `User ${user?.name} has been registered`,
       },
       login: {
         error: 'Login failed, please try again',

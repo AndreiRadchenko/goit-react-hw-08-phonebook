@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,24 +14,28 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
-import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { logOut } from 'redux/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'hooks/useAuth';
 
 const drawerWidth = 240;
 
-const userMenu = [
+const navMenu = [
   { menuItem: 'Contacts', destination: 'contacts' },
   { menuItem: 'About', destination: '/' },
+];
+
+const userMenu = [
   { menuItem: 'Register', destination: 'register' },
   { menuItem: 'Log in', destination: 'login' },
 ];
 
 export function MainAppBar(props) {
-  const { isLoggedIn } = useAuth();
+  const { isLoading, isLoggedIn, user } = useAuth();
   const location = useLocation();
   const dispatch = useDispatch();
   const { window } = props;
@@ -58,7 +62,35 @@ export function MainAppBar(props) {
       </Typography>
       <Divider />
       <List>
-        {userMenu.map(({ menuItem, destination }) => (
+        {isLoggedIn ? (
+          <>
+            <ListItem key={'userName'} disablePadding>
+              <Typography variant="h7" sx={{ my: 2, ml: 2 }}>
+                {user?.name}
+              </Typography>
+            </ListItem>
+            <Divider />
+            <ListItem key={'logout'} disablePadding>
+              <ListItemButton sx={{ textAlign: 'left' }} onClick={handleLogOut}>
+                <ListItemText primary="Log out" />
+              </ListItemButton>
+            </ListItem>
+          </>
+        ) : (
+          userMenu.map(({ menuItem, destination }) => (
+            <ListItem key={menuItem} disablePadding>
+              <ListItemButton
+                sx={{ textAlign: 'left' }}
+                component={RouterLink}
+                to={destination}
+                state={{ from: location }}
+              >
+                <ListItemText primary={menuItem} />
+              </ListItemButton>
+            </ListItem>
+          ))
+        )}
+        {navMenu.map(({ menuItem, destination }) => (
           <ListItem key={menuItem} disablePadding>
             <ListItemButton
               sx={{ textAlign: 'left' }}
@@ -70,11 +102,6 @@ export function MainAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItem key={'logout'} disablePadding>
-          <ListItemButton sx={{ textAlign: 'left' }} onClick={handleLogOut}>
-            <ListItemText primary="Log out" />
-          </ListItemButton>
-        </ListItem>
       </List>
     </Box>
   );
@@ -83,7 +110,7 @@ export function MainAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex', mw: 'lg' }}>
+    <Box sx={{ display: 'flex', mw: 'xl' }}>
       <CssBaseline />
       <AppBar component="nav">
         <Container maxWidth="xl">
@@ -100,12 +127,12 @@ export function MainAppBar(props) {
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, display: { sm: 'block' } }}
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
               Phonebook
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {userMenu.map(({ menuItem, destination }) => (
+            <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              {navMenu.map(({ menuItem, destination }) => (
                 <Button
                   key={menuItem}
                   component={RouterLink}
@@ -116,13 +143,41 @@ export function MainAppBar(props) {
                   {menuItem}
                 </Button>
               ))}
-              <Button
-                key={'logout'}
-                sx={{ color: '#fff' }}
-                onClick={handleLogOut}
-              >
-                Log out
-              </Button>
+              {!isLoggedIn &&
+                userMenu.map(({ menuItem, destination }) => (
+                  <Button
+                    key={menuItem}
+                    component={RouterLink}
+                    to={destination}
+                    state={{ from: location }}
+                    sx={{ color: '#fff' }}
+                  >
+                    {menuItem}
+                  </Button>
+                ))}
+              {isLoggedIn && (
+                <>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{
+                      flexGrow: 1,
+                      display: { sm: 'block' },
+                      // fontSize: 18,
+                    }}
+                  >
+                    {user?.name}
+                  </Typography>
+                  <LoadingButton
+                    loading={isLoading}
+                    key={'logout'}
+                    sx={{ color: '#fff' }}
+                    onClick={handleLogOut}
+                  >
+                    Log out
+                  </LoadingButton>
+                </>
+              )}
             </Box>
           </Toolbar>
         </Container>

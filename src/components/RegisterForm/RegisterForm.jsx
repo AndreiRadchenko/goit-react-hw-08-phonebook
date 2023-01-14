@@ -17,8 +17,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/auth';
-import { useShowToast } from 'hooks/useShowToast';
-import { Toast } from 'components/Toast/Toast';
 import { useAuth } from 'hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,11 +26,11 @@ export const RegisterForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading, isLoggedIn } = useAuth();
-  const { isToastVisible, hideToast, toastSeverity, toastText } =
-    useShowToast('register');
   const navigate = useNavigate();
 
-  useEffect(() => isLoggedIn && navigate('/contacts'), [isLoggedIn, navigate]);
+  useEffect(() => {
+    isLoggedIn && navigate('/contacts');
+  }, [isLoggedIn, navigate]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -58,14 +56,6 @@ export const RegisterForm = () => {
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <CssBaseline />
-
-        <Toast
-          open={isToastVisible}
-          onClose={hideToast}
-          toastText={toastText}
-          severity={toastSeverity}
-        />
-
         <Box
           sx={{
             marginTop: 12,

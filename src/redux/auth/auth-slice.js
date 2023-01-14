@@ -50,7 +50,7 @@ const authSlice = createSlice({
         state.user.email = null;
         state.isLoggedIn = false;
       })
-      .addCase(fetchCurrentUser.fulfilled.toString(), handleSuccsess)
+      .addCase(fetchCurrentUser.fulfilled, handleSuccsess)
 
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)
       .addMatcher(isAnyOf(...getActions('pending')), handlePending)

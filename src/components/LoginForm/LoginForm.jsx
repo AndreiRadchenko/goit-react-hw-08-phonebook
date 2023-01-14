@@ -15,8 +15,6 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { logIn } from 'redux/auth';
-import { useShowToast } from 'hooks/useShowToast';
-import { Toast } from 'components/Toast/Toast';
 import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -26,11 +24,11 @@ const theme = createTheme();
 export function LoginForm() {
   const dispatch = useDispatch();
   const { isLoading, isLoggedIn } = useAuth();
-  const { isToastVisible, hideToast, toastSeverity, toastText } =
-    useShowToast('login');
   const navigate = useNavigate();
 
-  useEffect(() => isLoggedIn && navigate('/contacts'), [isLoggedIn, navigate]);
+  useEffect(() => {
+    isLoggedIn && navigate('/contacts');
+  }, [isLoggedIn, navigate]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -55,13 +53,6 @@ export function LoginForm() {
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <CssBaseline />
-
-        <Toast
-          open={isToastVisible}
-          onClose={hideToast}
-          toastText={toastText}
-          severity={toastSeverity}
-        />
 
         <Box
           sx={{

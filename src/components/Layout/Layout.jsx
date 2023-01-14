@@ -1,9 +1,13 @@
 import Container from '@mui/material/Container';
+import { Toast } from 'components/Toast/Toast';
 import { Outlet } from 'react-router-dom';
 import { Copyright } from 'components/Copyright/Copyright';
 import { MainAppBar } from 'components/MainAppBar/MainAppBar';
+import { useShowToast } from 'hooks/useShowToast';
 
 export const Layout = () => {
+  const { isToastVisible, hideToast, toastSeverity, toastText } =
+    useShowToast('login');
   return (
     <div
       style={{
@@ -14,6 +18,12 @@ export const Layout = () => {
       }}
     >
       <Container component="main" maxWidth="xl">
+        <Toast
+          open={isToastVisible}
+          onClose={hideToast}
+          toastText={toastText}
+          severity={toastSeverity}
+        />
         <MainAppBar />
         <Outlet />
       </Container>
