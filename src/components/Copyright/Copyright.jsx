@@ -11,9 +11,9 @@ export const Copyright = props => {
         align="center"
         {...props}
       >
-        {'Copyright © '}
+        {'Copyright © Created by '}
         <Link color="inherit" href="https://github.com/AndreiRadchenko">
-          Created by Andrii Radchenko
+          Andrii Radchenko
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}

@@ -29,8 +29,9 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isLoggedIn && navigate('/contacts');
-  }, [isLoggedIn, navigate]);
+    isLoggedIn &&
+      navigate('/contacts', { replace: true, state: { from: location } });
+  }, [isLoggedIn, navigate, location]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +49,11 @@ export const RegisterForm = () => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    dispatch(register(credentials));
+    dispatch(register(credentials))
+      .unwrap()
+      .then(() => {})
+      .catch(e => {})
+      .finally((location.state.form = 'register'));
     event.currentTarget.reset();
   };
 

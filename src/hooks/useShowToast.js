@@ -15,6 +15,9 @@ export const useShowToast = currentPage => {
   const hideToast = () => setIsToastVisible(false);
 
   useEffect(() => {
+    if (currentPage === '') {
+      return;
+    }
     const messages = {
       register: {
         error: "Sorry, can't register user with this credentials!",
@@ -22,19 +25,23 @@ export const useShowToast = currentPage => {
       },
       login: {
         error: 'Login failed, please try again',
-        success: `User ${user.name} has logged in`,
+        success: `User ${user?.name} has logged in`,
+      },
+      addContact: {
+        error: `Contacts name is being used`,
+        success: `New contact has been added`,
       },
     };
 
     if (error !== null) {
       setIsToastVisible(true);
       setToastSeverity('error');
-      setToastText(messages[currentPage].error);
+      setToastText(messages[currentPage]?.error);
       dispatch(resetAuthError());
-    } else if (prevUserName === null && user.name !== null) {
+    } else if (prevUserName === null && user?.name !== null) {
       setIsToastVisible(true);
       setToastSeverity('success');
-      setToastText(messages[currentPage].success);
+      setToastText(messages[currentPage]?.success);
     }
   }, [error, user, dispatch, prevUserName, currentPage]);
 

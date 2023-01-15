@@ -22,7 +22,7 @@ const handleError = (state, action) => {
   state.isLoading = false;
 };
 
-const handleSuccsess = (state, { payload: { user, token } }) => {
+const handleSuccess = (state, { payload: { user, token } }) => {
   state.user = user;
   state.token = token;
   state.isLoggedIn = true;
@@ -43,14 +43,17 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(register.fulfilled, handleSuccsess)
-      .addCase(logIn.fulfilled, handleSuccsess)
+      .addCase(register.fulfilled, handleSuccess)
+      .addCase(logIn.fulfilled, handleSuccess)
       .addCase(logOut.fulfilled, state => {
         state.user.name = null;
         state.user.email = null;
         state.isLoggedIn = false;
       })
-      .addCase(fetchCurrentUser.fulfilled, handleSuccsess)
+      .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        state.isLoggedIn = true;
+      })
 
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)
       .addMatcher(isAnyOf(...getActions('pending')), handlePending)

@@ -4,10 +4,17 @@ import { Outlet } from 'react-router-dom';
 import { Copyright } from 'components/Copyright/Copyright';
 import { MainAppBar } from 'components/MainAppBar/MainAppBar';
 import { useShowToast } from 'hooks/useShowToast';
+import { useLocation } from 'react-router-dom';
 
 export const Layout = () => {
+  const location = useLocation();
+  const linkForm = location.state?.form ?? '';
+
+  // console.log(linkForm);
+
   const { isToastVisible, hideToast, toastSeverity, toastText } =
-    useShowToast('login');
+    useShowToast(linkForm);
+
   return (
     <div
       style={{

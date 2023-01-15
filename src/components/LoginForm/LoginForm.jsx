@@ -17,18 +17,21 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { logIn } from 'redux/auth';
 import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import { ThemeConsumer } from 'styled-components';
+// import { useShowToast } from 'hooks/useShowToast';
 
 const theme = createTheme();
 
 export function LoginForm() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading, isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    isLoggedIn && navigate('/contacts');
-  }, [isLoggedIn, navigate]);
+    isLoggedIn && navigate('/contacts', { replace: true });
+  }, [isLoggedIn, navigate, location]);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,7 +48,11 @@ export function LoginForm() {
       email: data.get('email'),
       password: data.get('password'),
     };
-    dispatch(logIn(credentials));
+    dispatch(logIn(credentials))
+      .unwrap()
+      .then(() => {})
+      .catch(e => {})
+      .finally((location.state.form = 'login'));
     event.currentTarget.reset();
   };
 
