@@ -7,19 +7,27 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person';
+import { useShowLoader } from 'hooks/useShowLoader';
+import CircularProgress from '@mui/material/CircularProgress';
+import Highlighter from 'react-highlight-words';
 import { useSelector } from 'react-redux';
-import { selectIsLoading } from 'redux/contacts';
-import BeatLoader from 'react-spinners/BeatLoader';
+import { selectFilter } from 'redux/filter';
 
 export const Contact = ({ id, onClick, name, number }) => {
-  const isLoading = useSelector(selectIsLoading);
+  const { isLoaderVisible, showLoader } = useShowLoader();
+  const filter = useSelector(selectFilter);
+
+  const handleOnClick = () => {
+    showLoader();
+    onClick(id);
+  };
+
   return (
     <ListItem
       divider
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" onClick={() => onClick(id)}>
-          {!isLoading && <DeleteIcon />}
-          <BeatLoader color="#36d7b7" size={6} loading={isLoading} />
+        <IconButton edge="end" aria-label="delete" onClick={handleOnClick}>
+          {isLoaderVisible ? <CircularProgress size={25} /> : <DeleteIcon />}
         </IconButton>
       }
     >
@@ -28,8 +36,16 @@ export const Contact = ({ id, onClick, name, number }) => {
           <PersonIcon />
         </Avatar>
       </ListItemAvatar>
-      ,
-      <ListItemText primary={name} secondary={number} />
+      <ListItemText
+        primary={
+          <Highlighter
+            searchWords={[filter]}
+            autoEscape={true}
+            textToHighlight={name}
+          />
+        }
+        secondary={number}
+      />
     </ListItem>
   );
 };

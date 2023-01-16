@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectContacts, selectIsLoading } from 'redux/contacts';
 import { addContactOperation } from 'redux/contacts';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const regExName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const regExNumber =
@@ -36,6 +37,7 @@ const validationSchema = Yup.object().shape({
 const theme = createTheme();
 
 export function AddContactForm() {
+  const navigate = useNavigate();
   const location = useLocation();
   const contacts = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
@@ -47,7 +49,12 @@ export function AddContactForm() {
       location.state.form = 'addContact';
       return;
     }
-    dispatch(addContactOperation({ name, number }));
+    dispatch(addContactOperation({ name, number }))
+      .unwrap()
+      .then(() => {
+        navigate('/contacts');
+      })
+      .catch();
     resetForm();
   };
 

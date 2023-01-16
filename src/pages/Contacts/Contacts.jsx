@@ -9,17 +9,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { FindForm } from 'components/FindForm/FindForm';
 import Typography from '@mui/material/Typography';
 import { AddCircle } from '@mui/icons-material';
-import { selectContacts } from 'redux/contacts';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContactsOperation, deleteContactOperation } from 'redux/contacts';
 import { Contact } from 'components/Contact';
-
-// const contacts = [
-//   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-//   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-//   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-//   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-// ];
+import { selectVisibleContacts } from 'redux/filter';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -28,7 +21,8 @@ const Demo = styled('div')(({ theme }) => ({
 export function Contacts() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const contacts = useSelector(selectContacts);
+  const visibleContacts = useSelector(selectVisibleContacts);
+  const reversedContacts = [...visibleContacts].reverse();
 
   React.useEffect(() => {
     dispatch(fetchContactsOperation());
@@ -70,7 +64,7 @@ export function Contacts() {
         <FindForm />
         <Demo>
           <List>
-            {contacts.map(({ id, name, number }) => (
+            {reversedContacts.map(({ id, name, number }) => (
               <Contact
                 key={id}
                 id={id}
