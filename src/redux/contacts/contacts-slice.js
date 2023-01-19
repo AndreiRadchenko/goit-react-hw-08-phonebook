@@ -9,6 +9,7 @@ const initialContacts = {
   items: [],
   isLoading: false,
   error: null,
+  addContactError: null,
 };
 
 const extraActions = [
@@ -36,7 +37,11 @@ const handleRejected = (state, action) => {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: initialContacts,
-
+  reducers: {
+    addContactError(state, action) {
+      state.addContactError = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchContactsOperation.fulfilled.toString(), (state, action) => {

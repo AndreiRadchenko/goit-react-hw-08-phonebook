@@ -7,12 +7,12 @@ import { Contacts } from 'pages/Contacts/Contacts';
 import { AddContact } from 'pages/AddContact/AddContact';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
 import { fetchCurrentUser } from 'redux/auth';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { RestrictedRoute } from 'components/RestrictedRoute';
 
 export const App = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchCurrentUser())
@@ -25,11 +25,26 @@ export const App = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<About />} />
-        <Route path="contacts" element={<Contacts />} />
-        <Route path="contacts/add" element={<AddContact />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
-        {/* <Route path="contacts/:contactId" element={<EditContact />} />  */}
+        <Route
+          path="contacts"
+          element={<PrivateRoute redirectTo="/" component={<Contacts />} />}
+        />
+        <Route
+          path="contacts/add"
+          element={<PrivateRoute redirectTo="/" component={<AddContact />} />}
+        />
+        <Route
+          path="register"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<Register />} />
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<Login />} />
+          }
+        />
       </Route>
     </Routes>
   );

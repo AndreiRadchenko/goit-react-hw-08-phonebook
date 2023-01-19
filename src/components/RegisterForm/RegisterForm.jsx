@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -18,20 +18,18 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/auth';
 import { useAuth } from 'hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export const RegisterForm = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isLoading, isLoggedIn } = useAuth();
-  const navigate = useNavigate();
+  const { isLoading } = useAuth();
 
-  useEffect(() => {
-    isLoggedIn &&
-      navigate('/contacts', { replace: true, state: { from: location } });
-  }, [isLoggedIn, navigate, location]);
+  // useEffect(() => {
+  //   isLoggedIn &&
+  //     navigate('/contacts', { replace: true, state: { from: location } });
+  // }, [isLoggedIn, navigate, location]);
 
   const [showPassword, setShowPassword] = useState(false);
 

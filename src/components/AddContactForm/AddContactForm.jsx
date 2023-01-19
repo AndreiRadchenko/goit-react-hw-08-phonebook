@@ -12,8 +12,8 @@ import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectContacts, selectIsLoading } from 'redux/contacts';
 import { addContactOperation } from 'redux/contacts';
-import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const regExName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const regExNumber =
@@ -38,15 +38,14 @@ const theme = createTheme();
 
 export function AddContactForm() {
   const navigate = useNavigate();
-  const location = useLocation();
   const contacts = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
     if (contacts.find(e => e.name === name)) {
-      // Notify.warning(`${name} is already in contacts`);
-      location.state.form = 'addContact';
+      console.log(`Contact name ${name} is being used`);
+      toast.error(`Contact name ${name} is being used`);
       return;
     }
     dispatch(addContactOperation({ name, number }))
@@ -71,7 +70,6 @@ export function AddContactForm() {
     <ThemeProvider theme={theme}>
       <Container maxWidth="xs">
         <CssBaseline />
-
         <Box
           sx={{
             marginTop: 12,

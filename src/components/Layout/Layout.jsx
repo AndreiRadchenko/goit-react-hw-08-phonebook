@@ -5,6 +5,7 @@ import { Copyright } from 'components/Copyright/Copyright';
 import { MainAppBar } from 'components/MainAppBar/MainAppBar';
 import { useShowToast } from 'hooks/useShowToast';
 import { useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 export const Layout = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ export const Layout = () => {
           toastText={toastText}
           severity={toastSeverity}
         />
+        <Toaster position="top-right" />
         <MainAppBar />
         <Outlet />
       </Container>

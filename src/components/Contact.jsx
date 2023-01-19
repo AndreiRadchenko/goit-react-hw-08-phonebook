@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Highlighter from 'react-highlight-words';
 import { useSelector } from 'react-redux';
 import { selectFilter } from 'redux/filter';
+import Tooltip from '@mui/material/Tooltip';
 
 export const Contact = ({ id, onClick, name, number }) => {
   const { isLoaderVisible, showLoader } = useShowLoader();
@@ -26,9 +27,11 @@ export const Contact = ({ id, onClick, name, number }) => {
     <ListItem
       divider
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" onClick={handleOnClick}>
-          {isLoaderVisible ? <CircularProgress size={25} /> : <DeleteIcon />}
-        </IconButton>
+        <Tooltip title="Delete">
+          <IconButton edge="end" aria-label="delete" onClick={handleOnClick}>
+            {isLoaderVisible ? <CircularProgress size={25} /> : <DeleteIcon />}
+          </IconButton>
+        </Tooltip>
       }
     >
       <ListItemAvatar>

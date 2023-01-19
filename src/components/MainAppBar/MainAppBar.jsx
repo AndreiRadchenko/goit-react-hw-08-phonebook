@@ -14,13 +14,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logOut } from 'redux/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
+import AccountMenu from 'components/AccountMenu/AccountMenu';
 
 const drawerWidth = 240;
 
@@ -35,7 +35,7 @@ const userMenu = [
 ];
 
 export function MainAppBar(props) {
-  const { isLoading, isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const location = useLocation();
   const dispatch = useDispatch();
   const { window } = props;
@@ -66,7 +66,7 @@ export function MainAppBar(props) {
           <>
             <ListItem key={'userName'} disablePadding>
               <Typography variant="h7" sx={{ my: 2, ml: 2 }}>
-                {user?.name}
+                Welcom, {user?.name}
               </Typography>
             </ListItem>
             <Divider />
@@ -131,18 +131,11 @@ export function MainAppBar(props) {
             >
               Phonebook
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              {navMenu.map(({ menuItem, destination }) => (
-                <Button
-                  key={menuItem}
-                  component={RouterLink}
-                  to={destination}
-                  state={{ from: location }}
-                  sx={{ color: '#fff' }}
-                >
-                  {menuItem}
-                </Button>
-              ))}
+            <Box
+              sx={{
+                display: { xs: 'none', sm: 'flex' },
+              }}
+            >
               {!isLoggedIn &&
                 userMenu.map(({ menuItem, destination }) => (
                   <Button
@@ -156,27 +149,7 @@ export function MainAppBar(props) {
                   </Button>
                 ))}
               {isLoggedIn && (
-                <>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{
-                      flexGrow: 1,
-                      display: { sm: 'block' },
-                      // fontSize: 18,
-                    }}
-                  >
-                    {user?.name}
-                  </Typography>
-                  <LoadingButton
-                    loading={isLoading}
-                    key={'logout'}
-                    sx={{ color: '#fff' }}
-                    onClick={handleLogOut}
-                  >
-                    Log out
-                  </LoadingButton>
-                </>
+                <AccountMenu navMenu={navMenu} handleLogOut={handleLogOut} />
               )}
             </Box>
           </Toolbar>
