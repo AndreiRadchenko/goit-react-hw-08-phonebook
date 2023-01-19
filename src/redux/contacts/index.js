@@ -1,4 +1,8 @@
-export { contactsReducer } from './contacts-slice';
+export {
+  contactsReducer,
+  resetContactError,
+  resetContacts,
+} from './contacts-slice';
 export {
   fetchContactsOperation,
   addContactOperation,

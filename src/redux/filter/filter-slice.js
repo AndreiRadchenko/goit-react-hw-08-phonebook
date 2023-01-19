@@ -9,8 +9,11 @@ const filterSlice = createSlice({
     setFilterAction(state, action) {
       return action.payload;
     },
+    resetFilter(state, _) {
+      return '';
+    },
   },
 });
 
-export const { setFilterAction } = filterSlice.actions;
+export const { setFilterAction, resetFilter } = filterSlice.actions;
 export const filterReducer = filterSlice.reducer;

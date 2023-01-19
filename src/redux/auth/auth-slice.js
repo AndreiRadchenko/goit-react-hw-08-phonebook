@@ -17,10 +17,10 @@ const handlePending = state => {
   state.isLoading = true;
 };
 
-const handleError = (state, action) => {
-  state.error = action.payload;
-  state.isLoading = false;
-};
+// const handleError = (state, action) => {
+//   state.error = action.payload;
+//   state.isLoading = false;
+// };
 
 const handleSuccess = (state, { payload: { user, token } }) => {
   state.user = user;
@@ -55,9 +55,26 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
       })
 
+      .addCase(logIn.rejected, (state, { payload }) => {
+        state.error = 'Login failed, please try again';
+        state.isLoading = false;
+      })
+      .addCase(register.rejected, (state, { payload }) => {
+        state.error = "Sorry, can't register user with this credentials!";
+        state.isLoading = false;
+      })
+      .addCase(logOut.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, { payload }) => {
+        state.error = '';
+        state.isLoading = false;
+      })
+
       .addMatcher(isAnyOf(...getActions('fulfilled')), handleAnySuccess)
-      .addMatcher(isAnyOf(...getActions('pending')), handlePending)
-      .addMatcher(isAnyOf(...getActions('rejected')), handleError);
+      .addMatcher(isAnyOf(...getActions('pending')), handlePending);
+    // .addMatcher(isAnyOf(...getActions('rejected')), handleError);
   },
 });
 

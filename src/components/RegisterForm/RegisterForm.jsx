@@ -26,11 +26,6 @@ export const RegisterForm = () => {
   const dispatch = useDispatch();
   const { isLoading } = useAuth();
 
-  // useEffect(() => {
-  //   isLoggedIn &&
-  //     navigate('/contacts', { replace: true, state: { from: location } });
-  // }, [isLoggedIn, navigate, location]);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
@@ -47,11 +42,7 @@ export const RegisterForm = () => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    dispatch(register(credentials))
-      .unwrap()
-      .then(() => {})
-      .catch(e => {})
-      .finally((location.state.form = 'register'));
+    dispatch(register(credentials));
     event.currentTarget.reset();
   };
 

@@ -18,9 +18,11 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logOut } from 'redux/auth';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
 import AccountMenu from 'components/AccountMenu/AccountMenu';
+import { resetContacts } from 'redux/contacts';
+import { resetFilter } from 'redux/filter';
 
 const drawerWidth = 240;
 
@@ -40,7 +42,7 @@ export function MainAppBar(props) {
   const dispatch = useDispatch();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(prevState => !prevState);
@@ -50,7 +52,8 @@ export function MainAppBar(props) {
     dispatch(logOut())
       .unwrap()
       .then(() => {
-        navigate('/');
+        dispatch(resetContacts());
+        dispatch(resetFilter());
       })
       .catch(e => console.log(e));
   };

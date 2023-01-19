@@ -17,12 +17,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { logIn } from 'redux/auth';
 import { useAuth } from 'hooks/useAuth';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 
 const theme = createTheme();
 
 export function LoginForm() {
-  const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading } = useAuth();
 
@@ -45,7 +43,7 @@ export function LoginForm() {
       .unwrap()
       .then(() => {})
       .catch(e => {})
-      .finally((location.state.form = 'login'));
+      .finally();
     event.currentTarget.reset();
   };
 

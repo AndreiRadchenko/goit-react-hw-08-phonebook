@@ -1,49 +1,41 @@
 import { useAuth } from 'hooks/useAuth';
 import { useState, useEffect } from 'react';
 import { resetAuthError } from 'redux/auth/auth-slice';
-import { useDispatch } from 'react-redux';
-import { usePrevious } from 'react-use';
+import { useDispatch, useSelector } from 'react-redux';
+// import { usePrevious } from 'react-use';
+import { selectError } from 'redux/contacts/contacts-selectors';
+import { resetContactError } from 'redux/contacts';
 
 export const useShowToast = currentPage => {
-  const { user, error } = useAuth();
+  const addContactError = useSelector(selectError);
+  const { error: authError } = useAuth();
   const dispatch = useDispatch();
   const [isToastVisible, setIsToastVisible] = useState(false);
   const [toastText, setToastText] = useState('');
   const [toastSeverity, setToastSeverity] = useState('error');
-  const prevUserName = usePrevious(user?.name);
+  // const prevUserName = usePrevious(user?.name);
 
   const hideToast = () => setIsToastVisible(false);
 
   useEffect(() => {
-    if (currentPage === '') {
-      return;
-    }
-    const messages = {
-      register: {
-        error: "Sorry, can't register user with this credentials!",
-        success: `User ${user?.name} has been registered`,
-      },
-      login: {
-        error: 'Login failed, please try again',
-        success: `User ${user?.name} has logged in`,
-      },
-      addContact: {
-        error: `Contacts name is being used`,
-        success: `New contact has been added`,
-      },
-    };
-
-    if (error !== null) {
+    if (addContactError !== null) {
       setIsToastVisible(true);
       setToastSeverity('error');
-      setToastText(messages[currentPage]?.error);
-      dispatch(resetAuthError());
-    } else if (prevUserName === null && user?.name !== null) {
-      setIsToastVisible(true);
-      setToastSeverity('success');
-      setToastText(messages[currentPage]?.success);
+      setToastText(addContactError);
+      dispatch(resetContactError());
+      return;
     }
-  }, [error, user, dispatch, prevUserName, currentPage]);
+    if (authError !== null) {
+      if (authError === '') {
+        return;
+      }
+      setIsToastVisible(true);
+      setToastSeverity('error');
+      setToastText(authError);
+      dispatch(resetAuthError());
+      return;
+    }
+  }, [authError, dispatch, addContactError]);
 
   return { isToastVisible, hideToast, toastSeverity, toastText };
 };

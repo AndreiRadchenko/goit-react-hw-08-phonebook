@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectContacts, selectIsLoading } from 'redux/contacts';
 import { addContactOperation } from 'redux/contacts';
 import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 const regExName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 const regExNumber =
@@ -43,12 +42,11 @@ export function AddContactForm() {
   const dispatch = useDispatch();
 
   const handleFormSubmit = ({ name, number }, { resetForm }) => {
+    let error = null;
     if (contacts.find(e => e.name === name)) {
-      console.log(`Contact name ${name} is being used`);
-      toast.error(`Contact name ${name} is being used`);
-      return;
+      error = `Contact name ${name} is being used`;
     }
-    dispatch(addContactOperation({ name, number }))
+    dispatch(addContactOperation({ name, number, error }))
       .unwrap()
       .then(() => {
         navigate('/contacts');

@@ -23,6 +23,10 @@ export const addContactOperation = createAsyncThunk(
   'contacts/addContact',
   async (contact, thunkAPI) => {
     try {
+      if (contact.error !== null) {
+        // console.log(`Contact name is being used`);
+        return thunkAPI.rejectWithValue(contact.error);
+      }
       const { data } = await axios.post('/contacts', contact);
       return data;
     } catch (error) {

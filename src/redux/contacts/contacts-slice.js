@@ -9,7 +9,6 @@ const initialContacts = {
   items: [],
   isLoading: false,
   error: null,
-  addContactError: null,
 };
 
 const extraActions = [
@@ -32,27 +31,31 @@ const handleAnySuccess = state => {
 const handleRejected = (state, action) => {
   state.isLoading = false;
   state.error = action.payload;
+  // console.log(action.payload);
 };
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: initialContacts,
   reducers: {
-    addContactError(state, action) {
-      state.addContactError = action.payload;
+    resetContactError(state, action) {
+      state.error = null;
+    },
+    resetContacts(state, action) {
+      state.items = [];
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchContactsOperation.fulfilled.toString(), (state, action) => {
+      .addCase(fetchContactsOperation.fulfilled, (state, action) => {
         state.items = action.payload;
       })
 
-      .addCase(addContactOperation.fulfilled.toString(), (state, action) => {
+      .addCase(addContactOperation.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
 
-      .addCase(deleteContactOperation.fulfilled.toString(), (state, action) => {
+      .addCase(deleteContactOperation.fulfilled, (state, action) => {
         const index = state.items.findIndex(e => e.id === action.payload.id);
         state.items.splice(index, 1);
       })
@@ -64,3 +67,4 @@ const contactsSlice = createSlice({
 });
 
 export const contactsReducer = contactsSlice.reducer;
+export const { resetContactError, resetContacts } = contactsSlice.actions;
