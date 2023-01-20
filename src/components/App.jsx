@@ -6,15 +6,7 @@ import { PrivateRoute } from 'components/PrivateRoute';
 import { RestrictedRoute } from 'components/RestrictedRoute';
 import { lazy } from 'react';
 
-// const Home = lazy(() => import('../pages/Home/Home'));
 import Layout from './Layout/Layout';
-
-// import About from 'pages/About/About';
-// import Register from 'pages/Register/Register';
-// import Login from 'pages/Login/Login';
-// import Contacts from 'pages/Contacts/Contacts';
-// import AddContact from 'pages/AddContact/AddContact';
-
 const About = lazy(() => import('pages/About/About'));
 const Register = lazy(() => import('pages/Register/Register'));
 const Login = lazy(() => import('pages/Login/Login'));
@@ -37,11 +29,15 @@ export const App = () => {
         <Route index element={<About />} />
         <Route
           path="contacts"
-          element={<PrivateRoute redirectTo="/" component={<Contacts />} />}
+          element={
+            <PrivateRoute redirectTo="/login" component={<Contacts />} />
+          }
         />
         <Route
           path="contacts/add"
-          element={<PrivateRoute redirectTo="/" component={<AddContact />} />}
+          element={
+            <PrivateRoute redirectTo="/login" component={<AddContact />} />
+          }
         />
         <Route
           path="register"

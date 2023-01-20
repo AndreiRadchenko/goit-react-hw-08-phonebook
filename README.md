@@ -15,3 +15,4 @@ In this application I had used following framework and libraries:
 - Formik, yup (form input and validation)
 - Axios
 - React-use
+- Component lazy loading
