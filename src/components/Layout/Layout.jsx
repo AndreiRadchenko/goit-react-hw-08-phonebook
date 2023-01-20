@@ -5,8 +5,10 @@ import { Copyright } from 'components/Copyright/Copyright';
 import { MainAppBar } from 'components/MainAppBar/MainAppBar';
 import { useShowToast } from 'hooks/useShowToast';
 import { useLocation } from 'react-router-dom';
+import { Suspense } from 'react';
+import LinearBuffer from 'components/LinearBuffer/LinearBuffer';
 
-export const Layout = () => {
+const Layout = () => {
   const location = useLocation();
   const linkForm = location.state?.form ?? '';
 
@@ -30,9 +32,13 @@ export const Layout = () => {
           severity={toastSeverity}
         />
         <MainAppBar />
-        <Outlet />
+        <Suspense fallback={<LinearBuffer />}>
+          <Outlet />
+        </Suspense>
       </Container>
       <Copyright sx={{ mt: 'auto', mb: 2 }} />
     </div>
   );
 };
+
+export default Layout;

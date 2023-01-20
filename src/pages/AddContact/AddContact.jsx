@@ -1,7 +1,7 @@
 import { AddContactForm } from 'components/AddContactForm/AddContactForm';
 import { BackAppBar } from 'components/BackAppBar/BackAppBar';
 
-export const AddContact = () => {
+const AddContact = () => {
   return (
     <>
       <BackAppBar />
@@ -9,3 +9,5 @@ export const AddContact = () => {
     </>
   );
 };
+
+export default AddContact;

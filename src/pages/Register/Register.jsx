@@ -1,6 +1,7 @@
 import { RegisterForm } from 'components/RegisterForm/RegisterForm';
 import { BackAppBar } from 'components/BackAppBar/BackAppBar';
-export const Register = () => {
+
+const Register = () => {
   return (
     <>
       <BackAppBar />
@@ -8,3 +9,5 @@ export const Register = () => {
     </>
   );
 };
+
+export default Register;

@@ -18,7 +18,7 @@ const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export function Contacts() {
+function Contacts() {
   const dispatch = useDispatch();
   const location = useLocation();
   const visibleContacts = useSelector(selectVisibleContacts);
@@ -79,3 +79,5 @@ export function Contacts() {
     </Container>
   );
 }
+
+export default Contacts;

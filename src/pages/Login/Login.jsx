@@ -1,6 +1,7 @@
 import { LoginForm } from 'components/LoginForm/LoginForm';
 import { BackAppBar } from 'components/BackAppBar/BackAppBar';
-export const Login = () => {
+
+const Login = () => {
   return (
     <>
       <BackAppBar />
@@ -8,3 +9,5 @@ export const Login = () => {
     </>
   );
 };
+
+export default Login;

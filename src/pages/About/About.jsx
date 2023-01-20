@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 
-export const About = () => {
+const About = () => {
   return (
     <Box component="main" sx={{ p: 3, mt: 8 }}>
       <h1>Phonebook</h1>
@@ -26,3 +26,5 @@ export const About = () => {
     </Box>
   );
 };
+
+export default About;
